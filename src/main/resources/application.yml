@@ -1,0 +1,3 @@
+bot:
+  username: ClassicKiryshaBot
+  token: ${BOT_TOKEN}
