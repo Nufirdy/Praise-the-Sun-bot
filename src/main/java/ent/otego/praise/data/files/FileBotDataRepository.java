@@ -2,46 +2,60 @@ package ent.otego.praise.data.files;
 
 import ent.otego.praise.data.BotDataRepository;
 import ent.otego.praise.data.TelegramChat;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+@Slf4j
 @Repository
 class FileBotDataRepository implements BotDataRepository {
 
-    private final List<TelegramChat> chatsCache;
+    private final static Path SERIALIZED_CHATS_FILE = Path.of(
+            System.getProperty("user.dir")
+                    + System.getProperty("file.separator")
+                    + "chats_list.ser");
+
+    private final Set<TelegramChat> chatsCache;
 
     public FileBotDataRepository() {
-        chatsCache = readSerializedListFormFile();
+        chatsCache = readSerializedSetFormFile();
     }
 
-    public List<TelegramChat> readSerializedListFormFile() {
-        Path serializedObject = Path.of(System.getProperty("user.dir") + System.getProperty("file.separator") + "chats_list.ser");
-        if (Files.exists(serializedObject)) {
-            try (FileInputStream streamIn = new FileInputStream(serializedObject.toFile());
+    public Set<TelegramChat> readSerializedSetFormFile() {
+        if (Files.exists(SERIALIZED_CHATS_FILE)) {
+            try (FileInputStream streamIn = new FileInputStream(SERIALIZED_CHATS_FILE.toFile());
                  ObjectInputStream objectStream = new ObjectInputStream(streamIn)) {
-                return (List<TelegramChat>) objectStream.readObject();
+                return (Set<TelegramChat>) objectStream.readObject();
             } catch (IOException | ClassNotFoundException ex) {
-                return new ArrayList<>();
+                log.info("Не удалось найти файл со списком чатов, создан новый");
+                return new HashSet<>();
             }
         }
-        return new ArrayList<>();
+        return new HashSet<>();
     }
 
-    public void addChatToList() {
-
+    public void writeToSerializedSetFile() throws IOException {
+        FileOutputStream streamOut = new FileOutputStream(SERIALIZED_CHATS_FILE.toFile());
+        ObjectOutputStream objectStream = new ObjectOutputStream(streamOut);
+        objectStream.writeObject(chatsCache);
     }
 
     @Override
     public List<TelegramChat> getChatsList() {
         return List.copyOf(chatsCache);
+    }
+
+    @Override
+    public void saveChat(TelegramChat chat) {
+        if (chatsCache.add(chat)) {
+            writeToSerializedSetFile();
+        }
     }
 }

@@ -1,10 +1,11 @@
 package ent.otego.praise.data;
 
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 
-@Data
+@Getter
+@Builder
 public class TelegramChat implements Serializable {
 
     private static final long serialVersionUID = 15374321L;
