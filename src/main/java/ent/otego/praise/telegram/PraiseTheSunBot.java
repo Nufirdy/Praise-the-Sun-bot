@@ -1,15 +1,17 @@
 package ent.otego.praise.telegram;
 
+import ent.otego.praise.data.BotDataRepository;
+import ent.otego.praise.data.TelegramChat;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@Component
 @Slf4j
+@Component
 public class PraiseTheSunBot extends TelegramLongPollingBot {
 
     @Value("${bot.token}")
@@ -17,6 +19,13 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
 
     @Value("${bot.username}")
     private String username;
+
+    private final BotDataRepository botDataRepository;
+
+    @Autowired
+    public PraiseTheSunBot(BotDataRepository botDataRepository) {
+        this.botDataRepository = botDataRepository;
+    }
 
     @Override
     public String getBotUsername() {
@@ -30,13 +39,13 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        //
-        //категоризировать апдейт и вызвать нужный метод
         if (update.hasMessage()) {
             Message message = update.getMessage();
-            SendMessage response = new SendMessage();
-            Long chatId = message.getChatId();
-
+            TelegramChat chat = TelegramChat.builder()
+                    .chatId(message.getChatId())
+                    .isPrivate(message.getChat().isUserChat())
+                    .build();
+            botDataRepository.saveChat(chat);
         }
     }
 }

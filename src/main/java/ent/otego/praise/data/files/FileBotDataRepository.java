@@ -55,7 +55,12 @@ class FileBotDataRepository implements BotDataRepository {
     @Override
     public void saveChat(TelegramChat chat) {
         if (chatsCache.add(chat)) {
-            writeToSerializedSetFile();
+            try {
+                writeToSerializedSetFile();
+            } catch (IOException e) {
+                log.error("Ошибка записи чата в файл: {}", e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 }

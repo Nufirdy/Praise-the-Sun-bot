@@ -1,3 +1,3 @@
 bot:
   username: PraiseSunBot
-  token: ${BOT_TOKEN:5184454863:AAHITzuSoJcf6KxO48QKT4ty8eAWqsJlvaw}
+  token: ${BOT_TOKEN}

@@ -1,9 +1,9 @@
 package ent.otego.praise.schedule;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public interface TheSun {
 
-    LocalDateTime getZenithTime(LocalDate date);
+    ZonedDateTime getZenithTime(LocalDate date);
 }
