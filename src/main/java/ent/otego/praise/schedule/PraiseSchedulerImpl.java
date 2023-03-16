@@ -65,7 +65,11 @@ public class PraiseSchedulerImpl implements PraiseScheduler {
     public void schedulePraiseTaskFor(TelegramChat chat) {
         ScheduledFuture<?> praiseTask =
                 scheduledExecutor.schedule(() -> schedulePraise(chat), 0, TimeUnit.SECONDS);
-        praises.put(chat, praiseTask);
+        ScheduledFuture<?> prevTask = praises.put(chat, praiseTask);
+        if (prevTask != null) {
+            prevTask.cancel(true);
+            log.info("Rescheduled praise for {}", chat);
+        }
     }
 
     @Override
