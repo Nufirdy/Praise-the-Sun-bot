@@ -69,7 +69,6 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
                                         + "words. Wouldst thou be so kind as to better describe "
                                         + "thy location, so that I may when sun is highest at "
                                         + "your land.")
-                                .parseMode("HTML")
                                 .build();
                         try {
                             execute(sendMessage);
@@ -87,7 +86,6 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
                         .text("Ah, my dear friend! Pray tell, where exactly dost thou find thyself "
                                 + "at this moment? And I will know when sun is highest at your "
                                 + "land.")
-                        .parseMode("HTML")
                         .build();
                 try {
                     execute(sendMessage);
@@ -116,7 +114,6 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
                                         + "words. Wouldst thou be so kind as to better describe "
                                         + "thy location, so that I may when sun is highest at "
                                         + "your land.")
-                                .parseMode("HTML")
                                 .build();
                         try {
                             execute(sendMessage);
