@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>ent.otego</groupId>
-	<artifactId>praiseSender-the-sun-bot</artifactId>
+	<artifactId>praise-the-sun-bot</artifactId>
 	<version>0.1.0</version>
 	<name>Praise The Sun bot</name>
 
