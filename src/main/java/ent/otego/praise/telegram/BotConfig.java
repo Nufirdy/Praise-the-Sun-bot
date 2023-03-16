@@ -15,6 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -36,18 +37,15 @@ public class BotConfig {
     }
 
     private void updateBotCommands(PraiseTheSunBot bot) throws TelegramApiException {
-        BotCommand startCommand = BotCommand.builder()
-                .command("start")
-                .description("Alias for /location")
-                .build();
-        BotCommand locationCommand = BotCommand.builder()
-                .command("location")
-                .description("Set your location to calculate sun position. Command accepts "
-                        + "arguments in following format: "
-                        + "/location 17.945000 -90.166139 where 17.945000 is latitude and "
-                        + "-90.166139 is longitude. Or send location in next message")
-                .build();
-        List<BotCommand> botCommands = List.of(startCommand, locationCommand);
+        List<BotCommand> botCommands = new ArrayList<>();
+
+        for (PraiseSunBotCommand command : PraiseSunBotCommand.values()) {
+            BotCommand botCommand = BotCommand.builder()
+                    .command(command.getCommandLiteral())
+                    .description(command.getDescription())
+                    .build();
+            botCommands.add(botCommand);
+        }
         List<BotCommand> currentBotCommands = bot.execute(new GetMyCommands());
         if (currentBotCommands.size() != botCommands.size()
                 || !currentBotCommands.containsAll(botCommands)) {
