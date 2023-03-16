@@ -67,7 +67,7 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
                                 .chatId(message.getChatId())
                                 .text("Forgive me, my friend, but I fear I do not comprehend thy "
                                         + "words. Wouldst thou be so kind as to better describe "
-                                        + "thy location, so that I may when sun is highest at "
+                                        + "thy location, so that I may know when sun is highest at "
                                         + "your land.")
                                 .build();
                         try {
@@ -112,7 +112,7 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
                                 .chatId(message.getChatId())
                                 .text("Forgive me, my friend, but I fear I do not comprehend thy "
                                         + "words. Wouldst thou be so kind as to better describe "
-                                        + "thy location, so that I may when sun is highest at "
+                                        + "thy location, so that I may know when sun is highest at "
                                         + "your land.")
                                 .build();
                         try {
