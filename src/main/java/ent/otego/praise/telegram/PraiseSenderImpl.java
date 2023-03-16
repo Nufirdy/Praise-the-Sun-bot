@@ -2,7 +2,7 @@ package ent.otego.praise.telegram;
 
 import ent.otego.praise.data.BotDataRepository;
 import ent.otego.praise.data.TelegramChat;
-import ent.otego.praise.schedule.Praise;
+import ent.otego.praise.schedule.PraiseSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
@@ -10,23 +10,24 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Service
-public class PraiseSender implements Praise {
+public class PraiseSenderImpl implements PraiseSender {
 
     private static final String PRAISE_THE_SUN_STICKER_FILE_ID
             = "CAACAgIAAxkBAAMgYhZ1R-vQhP17Vtk19RCFQMIpctAAAnIJAAIItxkCBFPbWMaTR_cjBA";
+
 
     private final PraiseTheSunBot bot;
     private final BotDataRepository botDataRepository;
 
     @Autowired
-    public PraiseSender(PraiseTheSunBot bot,
-                        BotDataRepository botDataRepository) {
+    public PraiseSenderImpl(PraiseTheSunBot bot,
+                            BotDataRepository botDataRepository) {
         this.bot = bot;
         this.botDataRepository = botDataRepository;
     }
 
     @Override
-    public void praiseTheSun() {
+    public void praiseTheSun(TelegramChat chat) {
         for (TelegramChat telegramChat : botDataRepository.getChatsList()) {
             SendSticker sendPraiseTheSun = new SendSticker();
             sendPraiseTheSun.setSticker(new InputFile(PRAISE_THE_SUN_STICKER_FILE_ID));

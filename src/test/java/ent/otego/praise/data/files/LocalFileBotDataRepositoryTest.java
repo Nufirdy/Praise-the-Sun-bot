@@ -2,9 +2,9 @@ package ent.otego.praise.data.files;
 
 import org.junit.jupiter.api.Test;
 
-public class FileBotDataRepositoryTest {
+public class LocalFileBotDataRepositoryTest {
 
-    FileBotDataRepository testee;
+    LocalFileBotDataRepository testee;
 
     @Test
     public void testConstructor() {

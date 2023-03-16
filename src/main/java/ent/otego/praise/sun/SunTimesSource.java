@@ -4,6 +4,7 @@ import ent.otego.praise.schedule.TheSun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -13,9 +14,9 @@ public class SunTimesSource implements TheSun {
 
     private static final float DEFAULT_LATITUDE = 59.945073f;
     private static final float DEFAULT_LONGITUDE = 30.313775f;
-    private static final ZoneId DEFAULT_TIME_ZONE = ZoneId.of("UTC+3");
+    private static final ZoneId DEFAULT_TIME_ZONE = Clock.systemDefaultZone().getZone();
 
-    private SunriseSunsetClient sunriseSunsetClient;
+    private final SunriseSunsetClient sunriseSunsetClient;
 
     @Autowired
     public SunTimesSource(SunriseSunsetClient sunriseSunsetClient) {
@@ -23,10 +24,10 @@ public class SunTimesSource implements TheSun {
     }
 
     @Override
-    public ZonedDateTime getZenithTime(LocalDate date) {
+    public ZonedDateTime getZenithTime(LocalDate date, float lat, float lon) {
         SunriseSunsetResponse solarTimes = sunriseSunsetClient.getSolarTimes(
-                DEFAULT_LATITUDE,
-                DEFAULT_LONGITUDE,
+                lat,
+                lon,
                 date,
                 0);
         return solarTimes.getResults().getSolarNoon().withZoneSameInstant(DEFAULT_TIME_ZONE);

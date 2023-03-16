@@ -5,5 +5,5 @@ import java.time.ZonedDateTime;
 
 public interface TheSun {
 
-    ZonedDateTime getZenithTime(LocalDate date);
+    ZonedDateTime getZenithTime(LocalDate date, float lat, float lon);
 }

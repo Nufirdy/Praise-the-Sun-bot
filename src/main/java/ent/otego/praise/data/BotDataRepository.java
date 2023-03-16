@@ -6,5 +6,9 @@ public interface BotDataRepository {
 
     List<TelegramChat> getChatsList();
 
-    void saveChat(TelegramChat chat);
+    TelegramChat getByChatId(long telegramChatId);
+
+    void saveOrUpdateChat(TelegramChat chat);
+
+    boolean exists(long telegramChatId);
 }
