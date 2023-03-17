@@ -48,13 +48,6 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
             Message message = update.getMessage();
-            if (!botDataRepository.exists(message.getChatId())) {
-                TelegramChat chat = TelegramChat.builder()
-                        .chatId(message.getChatId())
-                        .isPrivate(message.getChat().isUserChat())
-                        .build();
-                botDataRepository.saveOrUpdateChat(chat);
-            }
 
             if (message.hasText() && message.getText().startsWith("/")) {
                 String messageText = message.getText();
@@ -75,14 +68,16 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
                     && (message.hasLocation() || message.hasText())) {
                 awaitCoordinatesReply(message);
             }
+        }
 
-            if (update.hasMyChatMember()) {
-                ChatMemberUpdated myChatMemberUpdated = update.getMyChatMember();
-                ChatMember myNewChatMember = myChatMemberUpdated.getNewChatMember();
-                if (myNewChatMember.getUser().getId() == botId
-                        && (myNewChatMember.getStatus().equals("kicked")
-                        || myNewChatMember.getStatus().equals("left"))) {
-                    TelegramChat chat = botDataRepository.getByChatId(message.getChatId());
+        if (update.hasMyChatMember()) {
+            ChatMemberUpdated myChatMemberUpdated = update.getMyChatMember();
+            ChatMember myNewChatMember = myChatMemberUpdated.getNewChatMember();
+            if (myNewChatMember.getUser().getId() == botId
+                    && (myNewChatMember.getStatus().equals("kicked")
+                    || myNewChatMember.getStatus().equals("left"))) {
+                TelegramChat chat = botDataRepository.getByChatId(myChatMemberUpdated.getChat().getId());
+                if (chat != null) {
                     praiseScheduler.cancelScheduledPraiseTask(chat);
                 }
             }
