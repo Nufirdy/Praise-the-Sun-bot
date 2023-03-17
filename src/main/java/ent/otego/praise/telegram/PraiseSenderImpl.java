@@ -1,6 +1,5 @@
 package ent.otego.praise.telegram;
 
-import ent.otego.praise.data.BotDataRepository;
 import ent.otego.praise.data.TelegramChat;
 import ent.otego.praise.schedule.PraiseSender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,28 +14,23 @@ public class PraiseSenderImpl implements PraiseSender {
     private static final String PRAISE_THE_SUN_STICKER_FILE_ID
             = "CAACAgIAAxkBAAMgYhZ1R-vQhP17Vtk19RCFQMIpctAAAnIJAAIItxkCBFPbWMaTR_cjBA";
 
-
     private final PraiseTheSunBot bot;
-    private final BotDataRepository botDataRepository;
 
     @Autowired
-    public PraiseSenderImpl(PraiseTheSunBot bot,
-                            BotDataRepository botDataRepository) {
+    public PraiseSenderImpl(PraiseTheSunBot bot) {
         this.bot = bot;
-        this.botDataRepository = botDataRepository;
     }
 
     @Override
     public void praiseTheSun(TelegramChat chat) {
-        for (TelegramChat telegramChat : botDataRepository.getChatsList()) {
-            SendSticker sendPraiseTheSun = new SendSticker();
-            sendPraiseTheSun.setSticker(new InputFile(PRAISE_THE_SUN_STICKER_FILE_ID));
-            sendPraiseTheSun.setChatId(telegramChat.getChatId().toString());
-            try {
-                bot.execute(sendPraiseTheSun);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+        SendSticker sendPraiseTheSun = SendSticker.builder()
+                .chatId(chat.getChatId())
+                .sticker(new InputFile(PRAISE_THE_SUN_STICKER_FILE_ID))
+                .build();
+        try {
+            bot.execute(sendPraiseTheSun);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
     }
 }
