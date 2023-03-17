@@ -21,7 +21,7 @@ public class PraiseSchedulerImpl implements PraiseScheduler {
     private final Map<TelegramChat, ScheduledFuture<?>> praises;
 
     private final TheSun theSun;
-    private PraiseSender praiseSender;
+    private final PraiseSender praiseSender;
 
     @Autowired
     public PraiseSchedulerImpl(TheSun theSun,
@@ -75,6 +75,9 @@ public class PraiseSchedulerImpl implements PraiseScheduler {
     @Override
     public void cancelScheduledPraiseTask(TelegramChat chat) {
         ScheduledFuture<?> praise = praises.remove(chat);
-        if (praise != null) praise.cancel(true);
+        if (praise != null) {
+            praise.cancel(true);
+            log.info("Canceled praise for {}", chat);
+        }
     }
 }
