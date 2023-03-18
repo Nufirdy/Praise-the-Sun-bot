@@ -76,7 +76,8 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
             if (myNewChatMember.getUser().getId() == botId
                     && (myNewChatMember.getStatus().equals("kicked")
                     || myNewChatMember.getStatus().equals("left"))) {
-                TelegramChat chat = botDataRepository.getByChatId(myChatMemberUpdated.getChat().getId());
+                TelegramChat chat =
+                        botDataRepository.getByChatId(myChatMemberUpdated.getChat().getId());
                 if (chat != null) {
                     praiseScheduler.cancelScheduledPraiseTask(chat);
                 }
@@ -102,7 +103,7 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
                         .chatId(message.getChatId())
                         .text("Forgive me, my friend, but I fear I do not comprehend thy "
                                 + "words. Wouldst thou be so kind as to better describe "
-                                + "thy location, so that I may know when sun is highest at "
+                                + "thy location, so that I shall know when sun is highest at "
                                 + "your land.")
                         .build();
                 try {
@@ -119,7 +120,7 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
         SendMessage sendMessage = SendMessage.builder()
                 .chatId(message.getChatId())
                 .text("Ah, my dear friend! Pray tell, where exactly dost thou find thyself "
-                        + "at this moment? And I will know when sun is highest at your "
+                        + "at this moment? And I shall know when sun is highest at your "
                         + "land.")
                 .build();
         try {
@@ -136,7 +137,12 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
 
         SendMessage sendMessage = SendMessage.builder()
                 .chatId(message.getChatId())
-                .text("Unsubscribed") //TODO more meaningful message
+                .text("Ah, I see. Thou art determined to tread thy own path, and I respect thy "
+                        + "choice. Know that I shall always be here for thee, shouldst thou ever "
+                        + "require my aid. For now, I shall continue on my own quest, seeking the "
+                        + "light of the sun and spreading its warmth wherever I go. May our "
+                        + "paths cross again someday, my friend. Until then, stay strong and take "
+                        + "care.")
                 .build();
         try {
             execute(sendMessage);
@@ -161,7 +167,7 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
                         .chatId(message.getChatId())
                         .text("Forgive me, my friend, but I fear I do not comprehend thy "
                                 + "words. Wouldst thou be so kind as to better describe "
-                                + "thy location, so that I may know when sun is highest at "
+                                + "thy location, so that I shall know when sun is highest at "
                                 + "your land.")
                         .build();
                 try {
