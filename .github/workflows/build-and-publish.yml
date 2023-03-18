@@ -56,8 +56,7 @@ jobs:
         env:
           CR_REGISTRY: crplsbd61fa1sn0gvmhe
           CR_REPOSITORY: praise-the-sun-bot
-          IMAGE_TAG: $RELEASE_VERSION
         run: |
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
-          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$RELEASE_VERSION .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$RELEASE_VERSION
     
