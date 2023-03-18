@@ -28,7 +28,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: bot-jar-artifact
-        path: target/
+        path: target/*.jar
 
   publish:
     runs-on: ubuntu-latest
@@ -45,6 +45,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: bot-jar-artifact
+          path: target/
           
       - name: Login to Yandex Cloud Container Registry
         id: login-cr
