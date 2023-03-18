@@ -28,7 +28,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: bot-jar-artifact
-        path: target/*.jar
+        path: target/
 
   publish:
     runs-on: ubuntu-latest
