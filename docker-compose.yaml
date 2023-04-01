@@ -2,7 +2,7 @@ version: '3.7'
 services:
   bot:
     container_name: praise-the-sun-bot
-    image: cr.yandex/crplsbd61fa1sn0gvmhe/praise-the-sun-bot:0.1.0
+    image: cr.yandex/crplsbd61fa1sn0gvmhe/praise-the-sun-bot:latest
     restart: always
     environment:
       BOT_TOKEN: {{ secrets.BOT_TOKEN }}
