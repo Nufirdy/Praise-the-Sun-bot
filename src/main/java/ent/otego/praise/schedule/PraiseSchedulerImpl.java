@@ -1,5 +1,6 @@
 package ent.otego.praise.schedule;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import ent.otego.praise.data.BotDataRepository;
 import ent.otego.praise.data.TelegramChat;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ public class PraiseSchedulerImpl implements PraiseScheduler {
     private final ScheduledExecutorService scheduledExecutor;
 
     private final Map<TelegramChat, ScheduledFuture<?>> praises;
+    private final Map<TelegramChat, LocalDate> previousPraises;
 
     private final TheSun theSun;
     private final PraiseSender praiseSender;
@@ -27,11 +29,17 @@ public class PraiseSchedulerImpl implements PraiseScheduler {
     public PraiseSchedulerImpl(TheSun theSun,
                                BotDataRepository repository,
                                PraiseSender praiseSender) {
-        int cores = Runtime.getRuntime().availableProcessors();
-        scheduledExecutor = Executors.newScheduledThreadPool(cores);
-        praises = new ConcurrentHashMap<>();
         this.theSun = theSun;
         this.praiseSender = praiseSender;
+
+        int cores = Runtime.getRuntime().availableProcessors();
+        ThreadFactory threadFactory = new ThreadFactoryBuilder()
+                .setNameFormat("praise-scheduler-thread-%d")
+                .build();
+        scheduledExecutor = Executors.newScheduledThreadPool(cores, threadFactory);
+
+        praises = new ConcurrentHashMap<>();
+        previousPraises = new ConcurrentHashMap<>();
 
         for (TelegramChat chat : repository.getChatsList()) {
             if (chat.getLongitude() != null && chat.getLatitude() != null) {
@@ -44,7 +52,9 @@ public class PraiseSchedulerImpl implements PraiseScheduler {
         ZonedDateTime sunInZenith = theSun.getZenithTime(LocalDate.now(), chat.getLatitude(),
                 chat.getLongitude());
         ZonedDateTime now = ZonedDateTime.now();
-        if (sunInZenith.isBefore(now)) {
+        LocalDate lastPraise = previousPraises.get(chat);
+        if (sunInZenith.isBefore(now)
+                || lastPraise != null && lastPraise.isEqual(LocalDate.now())) {
             sunInZenith = theSun.getZenithTime(LocalDate.from(LocalDate.now().plusDays(1)),
                     chat.getLatitude(), chat.getLongitude());
         }
@@ -58,6 +68,7 @@ public class PraiseSchedulerImpl implements PraiseScheduler {
 
     private void praiseTheSun(TelegramChat chat) {
         praiseSender.praiseTheSun(chat);
+        previousPraises.put(chat, LocalDate.now());
         schedulePraise(chat);
     }
 
