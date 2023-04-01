@@ -61,8 +61,8 @@ jobs:
           CR_REGISTRY: crplsbd61fa1sn0gvmhe
           CR_REPOSITORY: praise-the-sun-bot
         run: |
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$RELEASE_VERSION -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:lastest .
-          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$RELEASE_VERSION
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$RELEASE_VERSION -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:latest .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY --all-tags
 
       - name: Deploy COI VM
         id: deploy-coi
