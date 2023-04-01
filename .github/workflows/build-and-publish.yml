@@ -72,6 +72,7 @@ jobs:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
           folder-id: b1g3t7t89cl5bb41bne5
           VM-name: praise-the-sun-bot
+          vm-service-account-id: aje6rqjno8apla3rc978
           vm-subnet-id: e2l0815ankcpc6chrnio
           docker-compose-path: './docker-compose.yaml'
           user-data-path: './user-data.yaml'
