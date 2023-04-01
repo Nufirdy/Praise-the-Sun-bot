@@ -11,7 +11,7 @@
 
 	<groupId>ent.otego</groupId>
 	<artifactId>praise-the-sun-bot</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
 	<name>Praise The Sun bot</name>
 
 	<properties>
