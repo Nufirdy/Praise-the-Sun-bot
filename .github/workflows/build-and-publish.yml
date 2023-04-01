@@ -63,4 +63,13 @@ jobs:
         run: |
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$RELEASE_VERSION -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:lastest .
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$RELEASE_VERSION
-    
+
+      - name: Deploy COI VM
+        id: deploy-coi
+        uses: yc-actions/yc-coi-deploy@v1
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+          folder-id: b1g3t7t89cl5bb41bne5
+          VM-name: praise-the-sun-bot
+          vm-service-account-id: aje6rqjno8apla3rc978
+          docker-compose-path: './docker-compose.yaml'
