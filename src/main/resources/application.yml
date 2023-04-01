@@ -1,3 +1,7 @@
 bot:
   username: ${BOT_NAME}
   token: ${BOT_TOKEN}
+
+data:
+  localFile:
+    path: ${DATA_PATH}
