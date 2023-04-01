@@ -5,7 +5,7 @@ services:
     image: cr.yandex/crplsbd61fa1sn0gvmhe/praise-the-sun-bot:latest
     restart: always
     environment:
-      BOT_TOKEN: {{ secrets.BOT_TOKEN }}
+      BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       BOT_NAME: PraiseSunBot
       DATA_PATH: /data
     volumes:
