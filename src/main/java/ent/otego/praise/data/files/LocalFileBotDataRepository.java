@@ -21,7 +21,7 @@ class LocalFileBotDataRepository implements BotDataRepository {
     private final Map<Long, TelegramChat> chatsCache;
 
     public LocalFileBotDataRepository(@Value("data.localFile.path") String filePath) {
-        serializedChatsFile = Path.of(filePath);
+        serializedChatsFile = Path.of(filePath).resolve("chats.ser");
         chatsCache = readSerializedCacheFromFile();
     }
 
