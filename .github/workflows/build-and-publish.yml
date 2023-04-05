@@ -68,6 +68,8 @@ jobs:
       - name: Deploy COI VM
         id: deploy-coi
         uses: yc-actions/yc-coi-deploy@v1
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
           folder-id: b1g3t7t89cl5bb41bne5
