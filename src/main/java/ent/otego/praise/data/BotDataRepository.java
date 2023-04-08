@@ -10,5 +10,7 @@ public interface BotDataRepository {
 
     void saveOrUpdateChat(TelegramChat chat);
 
+    void delete(TelegramChat chat);
+
     boolean exists(long telegramChatId);
 }

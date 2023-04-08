@@ -133,6 +133,7 @@ public class PraiseTheSunBot extends TelegramLongPollingBot {
 
     private void executeStopCommand(Message message) {
         TelegramChat chat = botDataRepository.getByChatId(message.getChatId());
+        botDataRepository.delete(chat);
         praiseScheduler.cancelScheduledPraiseTask(chat);
 
         SendMessage sendMessage = SendMessage.builder()

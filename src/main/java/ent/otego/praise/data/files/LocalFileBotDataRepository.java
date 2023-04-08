@@ -20,7 +20,7 @@ class LocalFileBotDataRepository implements BotDataRepository {
 
     private final Map<Long, TelegramChat> chatsCache;
 
-    public LocalFileBotDataRepository(@Value("data.localFile.path") String filePath) {
+    public LocalFileBotDataRepository(@Value("${data.localFile.path}") String filePath) {
         serializedChatsFile = Path.of(filePath).resolve("chats.ser");
         chatsCache = readSerializedCacheFromFile();
     }
@@ -61,6 +61,20 @@ class LocalFileBotDataRepository implements BotDataRepository {
             return;
         }
         chatsCache.put(chat.getChatId(), chat);
+        try {
+            writeToSerializedCacheFile();
+        } catch (IOException e) {
+            log.error("Error writing chat to file: {}", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delete(TelegramChat chat) {
+        TelegramChat savedChat = chatsCache.remove(chat.getChatId());
+        if (savedChat == null) {
+            return;
+        }
         try {
             writeToSerializedCacheFile();
         } catch (IOException e) {
